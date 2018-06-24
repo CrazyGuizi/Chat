@@ -2,9 +2,8 @@ package com.example.crazygz.chat.common.util
 
 import android.util.Log
 
-public class LogUtil {
+public object LogUtil {
 
-    companion object {
         private const val VERBOSE: Int = 1;
 
         private const val DEBUG: Int = 2;
@@ -30,6 +29,5 @@ public class LogUtil {
         public fun w(tag: String, msg: String) = {if (level <=  WARN) Log.w(tag, msg)}
 
         public fun e(tag: String, msg: String) = {if (level <=  ERROR) Log.e(tag, msg)}
-    }
 
 }

@@ -7,4 +7,13 @@ import android.support.v7.app.AppCompatActivity
 
 public open class BaseAppCompatActivity : AppCompatActivity() {
 
+    companion object {
+        public var context: Context? = null
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        context = applicationContext
+    }
+
 }

@@ -12,6 +12,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.example.crazygz.chat.common.app.BaseAppCompatActivity
+import com.example.crazygz.chat.common.db.bean.UserManager
 import com.example.crazygz.chat.fragment.ChatFragment
 import com.example.crazygz.chat.fragment.FriendsFragment
 import com.example.crazygz.chat.fragment.MeFragment
@@ -19,10 +21,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 const val TAG = "MainActivity"
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : BaseAppCompatActivity(), View.OnClickListener {
 
     private var fragments: List<Fragment>? = null
+    private val titles = arrayListOf<String>("消息","好友","个人")
     private var currentIndexFragment: Int? = 0
+    private val user = UserManager.user
 
     override fun onClick(v: View?) {
 
@@ -33,11 +37,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             tv_me -> i = 2
         }
         if (i != currentIndexFragment) {
-            if(i == 2) {
-                toolbar.hideOverflowMenu()
-            } else {
-                toolbar.showOverflowMenu()
-            }
+//            if(i == 2) {
+//                toolbar.hideOverflowMenu()
+//            } else {
+//                toolbar.showOverflowMenu()
+//            }
             showFragment(i)
             currentIndexFragment = i
         }
@@ -55,6 +59,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 //        } else {
 //            transaction.add(R.id.view_pager, fragments!![position])
 //        }
+        toolbar.title = titles[position]
         transaction.replace(R.id.view_pager, fragments!![position])
         transaction.commit()
     }
@@ -75,10 +80,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         transaction.commit()
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun initView() {
 
         toolbar.run {
             inflateMenu(R.menu.menu_nav)
+            setTitleTextColor(R.color.textWhite)
             setOnMenuItemClickListener {
                 when(it .itemId) {
                 R.id.menu_add_friends -> addFriends()
@@ -86,6 +93,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
                 true }
         }
+
         tv_chat.setOnClickListener(this)
         tv_friends.setOnClickListener(this)
         tv_me.setOnClickListener(this)

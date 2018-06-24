@@ -26,7 +26,7 @@
             android:background="@drawable/icon_me"/>
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/iv_me"
@@ -34,10 +34,25 @@
             android:gravity="center"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:text="疯狂的贵子"
+            tools:text="疯狂的贵子"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/textWhite"/>
+
+        <TextView
+            android:id="@+id/tv_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/iv_me"
+            android:layout_marginTop="@dimen/len_8"
+            android:layout_marginLeft="@dimen/len_8"
+            android:layout_marginRight="@dimen/len_8"
+            android:layout_below="@id/tv_name"
+            android:lines="3"
+            android:ellipsize="end"
+            tools:text="一句话一句话一句话一句话一句话一句话一句话一句话一句话一句话一句话一句话一句话一句话一句话一句话一句话一句话"
+            android:textColor="@color/white"
+            />
 
     </RelativeLayout>
 
@@ -51,20 +66,109 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
+        <LinearLayout
+        android:id="@+id/ll_chang_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/len_8"
+        android:layout_marginLeft="@dimen/len_16"
+        android:layout_marginRight="@dimen/len_16"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <ImageView
-            android:id="@+id/iv_quit"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@color/textWhite"/>
+            android:layout_width="@dimen/len_16"
+            android:layout_height="@dimen/len_16"
+            android:background="@drawable/ic_change_password"/>
 
         <TextView
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/len_8"
+            android:layout_marginRight="@dimen/len_8"
+            android:gravity="center_vertical"
+            android:text="修改密码"
+            android:textSize="@dimen/font_16"/>
+
+        <ImageView
+            android:layout_width="@dimen/len_16"
+            android:layout_height="@dimen/len_16"
+            android:background="@drawable/ic_arrow_right"/>
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_chang_about"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:text="哈哈"
-            android:textSize="18sp"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/len_16"
+            android:layout_marginLeft="@dimen/len_16"
+            android:layout_marginRight="@dimen/len_16"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_chang_password">
+
+            <ImageView
+                android:layout_width="@dimen/len_16"
+                android:layout_height="@dimen/len_16"
+                android:background="@drawable/ic_about_me"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/len_8"
+                android:layout_marginRight="@dimen/len_8"
+                android:gravity="center_vertical"
+                android:text="个性签名"
+                android:textSize="@dimen/font_16"/>
+
+            <ImageView
+                android:layout_width="@dimen/len_16"
+                android:layout_height="@dimen/len_16"
+                android:background="@drawable/ic_arrow_right"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_quit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/len_16"
+            android:layout_marginLeft="@dimen/len_16"
+            android:layout_marginRight="@dimen/len_16"
+            app:layout_constraintTop_toBottomOf="@id/ll_chang_about"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <ImageView
+                android:layout_width="@dimen/len_16"
+                android:layout_height="@dimen/len_16"
+                android:background="@drawable/ic_logout"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/len_8"
+                android:layout_marginRight="@dimen/len_8"
+                android:gravity="center_vertical"
+                android:text="退出"
+                android:textSize="@dimen/font_16"/>
+
+            <ImageView
+                android:layout_width="@dimen/len_16"
+                android:layout_height="@dimen/len_16"
+                android:background="@drawable/ic_arrow_right"/>
+        </LinearLayout>
+
+
 
     </android.support.constraint.ConstraintLayout>
 
