@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 
 import com.example.crazygz.chat.R
 import com.example.crazygz.chat.activity.ChatActivity
@@ -25,8 +26,11 @@ class ChatFragment : Fragment() {
         // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_chat, container, false)
         val chat = view.findViewById<LinearLayout>(R.id.ll_chat)
+        val roomName = view.findViewById<TextView>(R.id.tv_room_name)
         chat.setOnClickListener {
-            startActivity(Intent(context, ChatActivity::class.java))
+            var i = Intent(context, ChatActivity::class.java)
+            i.putExtra("title",roomName!!.text.toString())
+            startActivity(i)
         }
         return view
     }

@@ -19,6 +19,7 @@
             android:layout_height="@dimen/len_24"
             android:background="@drawable/ic_chat"/>
         <TextView
+            android:id="@+id/tv_room_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/len_16"
