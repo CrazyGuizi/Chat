@@ -7,43 +7,79 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.crazygz.chat.R
-import com.example.crazygz.chat.common.db.bean.Constanst
+import com.example.crazygz.chat.common.db.bean.Constant
 import com.example.crazygz.chat.common.db.bean.Message
+import com.example.crazygz.chat.common.util.LogUtil
 
-public class MessageAdapter(var message: ArrayList<Message>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+public class MessageAdapter(private var messages: ArrayList<Message>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        private const val TAG = "MessageAdapter"
+    }
+
+    public fun addItem(m: Message) {
+        messages.add(m)
+        notifyDataSetChanged()
+
+    }
+
+    public fun addItemFirst(m: Message) {
+        messages.add(0, m)
+        notifyItemInserted(0)
+    }
+
+    public fun remove(m: Message) {
+        var position = messages.indexOf(m)
+        if (position != -1) {
+            messages.removeAt(position)
+            notifyItemRemoved(position)
+        }
+    }
+
+    public fun removeAll() {
+        notifyItemRangeRemoved(0, messages.size)
+        messages.clear()
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (message[position].type == Constanst.VIEW_TYPE_SERVER) { // 系统提示
-            if (holder is ServerMessageHolder) {
-                holder.onBind(message[position])
-            }
-        } else {
-            if (holder is MessageHolder) { // 收发消息
-                if (message[position].type == Constanst.VIEW_TYPE_RECEIVER) {
-                    holder.onBind(true, position)
-                } else if (message[position].type == Constanst.VIEW_TYPE_SENDER){
-                    message
-                    holder.onBind(false, position)
-                }
+        if (holder is ServerMessageHolder) {
+            holder.onBind(messages[position])
+            LogUtil.d(TAG, "布局为系统提醒")
+        } else if (holder is MessageHolder) { // 收发消息
+            if (messages[position].type == Constant.VIEW_TYPE_RECEIVER) {
+                holder.onBind(true, messages[position])
+                LogUtil.d(TAG, "布局为接收消息")
+            } else if (messages[position].type == Constant.VIEW_TYPE_SENDER){
+                holder.onBind(false, messages[position])
+                LogUtil.d(TAG, "布局为发送消息")
             }
         }
     }
 
 
     override fun getItemViewType(position: Int): Int {
-        return message[position].type
+        return messages[position].type
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.chat_item, null)
-        return MessageHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == Constant.VIEW_TYPE_SERVER) { // 系统提醒
+            val view =
+                    LayoutInflater.from(parent.context).inflate(R.layout.server_item, parent,false)
+
+            return ServerMessageHolder(view)
+        } else {
+            val  view =
+                    LayoutInflater.from(parent.context).inflate(R.layout.chat_item, parent, false)
+            return MessageHolder(view)
+        }
     }
 
     override fun getItemCount(): Int {
-        return message.size
+        return messages.size
     }
 
     //  系统提醒
-    inner class ServerMessageHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    private inner class ServerMessageHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
         private var server:TextView = itemView!!.findViewById(R.id.tv_server_message)
         fun onBind(message:Message) {
             server.text = "系统提醒：${message.name}${message.message}"
@@ -51,7 +87,7 @@ public class MessageAdapter(var message: ArrayList<Message>) : RecyclerView.Adap
     }
 
     // 接收和发送
-    inner class MessageHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    private inner class MessageHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
         private var isReceiver: Boolean = false
         private lateinit var receiver:TextView
@@ -70,18 +106,16 @@ public class MessageAdapter(var message: ArrayList<Message>) : RecyclerView.Adap
             layoutS = itemView.findViewById(R.id.ll_sender)
         }
 
-        fun onBind(isReceiver: Boolean, position: Int) {
+        fun onBind(isReceiver: Boolean, message: Message) {
             if (isReceiver) {
                 layoutS.visibility = View.GONE
-                receiver.text = message[position].name
-                receiverMessage.text = message[position].message
+                receiver.text = message.name
+                receiverMessage.text = message.message
             } else {
                 layoutR.visibility = View.GONE
-                sender.text = message[position].name
-                senderMessage.text = message[position].message
+                sender.text = message.name
+                senderMessage.text = message.message
             }
         }
     }
-
-
 }

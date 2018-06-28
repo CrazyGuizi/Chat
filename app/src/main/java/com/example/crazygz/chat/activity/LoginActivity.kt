@@ -182,6 +182,7 @@ class LoginActivity : BaseAppCompatActivity(), View.OnClickListener {
                             startActivity(Intent(this@LoginActivity,
                                     MainActivity::class.java))
                             ToastUtil.show(userManager.user!!.name + "已登录")
+                            LogUtil.d(TAG, userManager.user.toString())
                             finish()
                         }
                     }

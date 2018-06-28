@@ -1,19 +1,14 @@
 package com.example.crazygz.chat
 
 import android.annotation.SuppressLint
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.view.ViewPager
-import android.support.v7.view.menu.MenuBuilder
-import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.example.crazygz.chat.common.app.BaseAppCompatActivity
+import com.example.crazygz.chat.common.db.bean.User
 import com.example.crazygz.chat.common.db.bean.UserManager
+import com.example.crazygz.chat.common.util.LogUtil
 import com.example.crazygz.chat.fragment.ChatFragment
 import com.example.crazygz.chat.fragment.FriendsFragment
 import com.example.crazygz.chat.fragment.MeFragment
@@ -25,7 +20,7 @@ class MainActivity : BaseAppCompatActivity(), View.OnClickListener {
 
     private var fragments: List<Fragment>? = null
     private val titles = arrayListOf<String>("消息","好友","个人")
-    private var currentIndexFragment: Int? = 0
+    private var currentIndexFragment: Int? = 0 // 当前fragment索引
     private val user = UserManager.user
 
     override fun onClick(v: View?) {
@@ -37,11 +32,6 @@ class MainActivity : BaseAppCompatActivity(), View.OnClickListener {
             tv_me -> i = 2
         }
         if (i != currentIndexFragment) {
-//            if(i == 2) {
-//                toolbar.hideOverflowMenu()
-//            } else {
-//                toolbar.showOverflowMenu()
-//            }
             showFragment(i)
             currentIndexFragment = i
         }
@@ -49,18 +39,13 @@ class MainActivity : BaseAppCompatActivity(), View.OnClickListener {
 
     private fun showFragment(position: Int) {
         var transaction = supportFragmentManager.beginTransaction()
-//        for (i in fragments!!.indices) {
-//            if (i != position) {
-//                transaction.hide(fragments!![i])
-//            }
-//        }
-//        if (fragments!![position].isAdded) {
-//            transaction.show(fragments!![position])
-//        } else {
-//            transaction.add(R.id.view_pager, fragments!![position])
-//        }
+        for (i in fragments!!.indices) {
+            if (i != position) {
+                transaction.hide(fragments!![i])
+            }
+        }
+        transaction.show(fragments!![position])
         toolbar.title = titles[position]
-        transaction.replace(R.id.view_pager, fragments!![position])
         transaction.commit()
     }
 
@@ -69,20 +54,52 @@ class MainActivity : BaseAppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         initView()
-        initEvent()
+        initFragments()
     }
 
-    private fun initEvent() {
+//    // 保存user数据
+//    override fun onSaveInstanceState(outState: Bundle?) {
+//        if (outState != null) {
+//            outState.putInt("id", user!!.id)
+//            outState.putString("name", user!!.name)
+//            outState.putString("username", user!!.username)
+//            outState.putString("password", user!!.password)
+//            outState.putString("about", user!!.about)
+//        }
+//        super.onSaveInstanceState(outState)
+//    }
+
+//    // 恢复数据
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+//        if (savedInstanceState != null) {
+//            UserManager.user = User(savedInstanceState.getInt("id"),
+//                    savedInstanceState.getString("name"),
+//                    savedInstanceState.getString("username"),
+//                    savedInstanceState.getString("password"),
+//                    savedInstanceState.getString("about"))
+//            LogUtil.d(TAG, "恢复数据" +  user.toString())
+//        }
+//
+//    }
+
+
+    // 创建fragment并加载
+    private fun initFragments() {
         fragments = listOf(ChatFragment(), FriendsFragment(), MeFragment())
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
-        transaction.add(R.id.view_pager, fragments!![0])
+        for (f in fragments!!) {
+            transaction.add(R.id.container, f)
+            transaction.hide(f)
+        }
+        transaction.show(fragments!![0])
         transaction.commit()
     }
 
     @SuppressLint("ResourceAsColor")
     private fun initView() {
 
+        // Toolbar相关设置
         toolbar.run {
             inflateMenu(R.menu.menu_nav)
             setTitleTextColor(R.color.textWhite)
@@ -97,19 +114,6 @@ class MainActivity : BaseAppCompatActivity(), View.OnClickListener {
         tv_chat.setOnClickListener(this)
         tv_friends.setOnClickListener(this)
         tv_me.setOnClickListener(this)
-//        view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-//            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//            }
-//
-//            override fun onPageSelected(position: Int) {
-//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//            }
-//
-//            override fun onPageScrollStateChanged(state: Int) {
-//
-//            }
-//        })
     }
 
 

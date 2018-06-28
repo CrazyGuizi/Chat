@@ -2,16 +2,18 @@ package com.example.crazygz.chat.common.db.bean;
 
 public class Message {
 
-    String name;
-    String message;
     int type;
+    String name;
+    String username;
+    String message;
 
     public Message() {}
 
-    public Message(int type,String name, String message) {
-        this.name = name;
-        this.message = message;
+    public Message(int type, String name, String username, String message) {
         this.type = type;
+        this.name = name;
+        this.username = username;
+        this.message = message;
     }
 
     public String getName() {
@@ -20,6 +22,14 @@ public class Message {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getMessage() {
@@ -42,6 +52,7 @@ public class Message {
     public String toString() {
         return "Message{" +
                 "name='" + name + '\'' +
+                ", username='" + username + '\'' +
                 ", message='" + message + '\'' +
                 ", type=" + type +
                 '}';
