@@ -34,8 +34,11 @@ public class ClientSocket{
     private lateinit var writer: BufferedWriter
     public lateinit var listener: MessageListener
 
+    private lateinit var m:Message // 发送下线通知
+
     public fun connect(message: Message) {
         executor.execute {
+            m = message
             clientSocket = Socket(HttpUrl.LOCAL_HOST, HttpUrl.SOCKET_PORT)
             var inputStream = clientSocket.getInputStream()
             var outputStream = clientSocket.getOutputStream()
@@ -102,21 +105,25 @@ public class ClientSocket{
 
     // 关闭socket
     public fun close() {
-        try {
-            if (clientSocket != null) {
+        executor.execute {
+            try {
+                if (clientSocket != null) {
+                    m.message = "已下线"
+                    sendMessage(m)
+                    executor.shutdownNow()
+                }
+                if (reader != null) {
+                    reader.close()
+                }
+                if (writer != null) {
+                    writer.close()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                isClose = true
                 clientSocket.close()
             }
-            if (reader != null) {
-                reader.close()
-            }
-            if (writer != null) {
-                writer.close()
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            isClose = true
-            executor.shutdownNow()
         }
     }
 

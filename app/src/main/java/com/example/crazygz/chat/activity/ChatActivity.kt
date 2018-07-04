@@ -46,6 +46,7 @@ class ChatActivity : BaseAppCompatActivity(), View.OnClickListener {
                 user!!.name,
                 user!!.username,
                 "已上线")
+
         messages.add(online)
         client = ClientSocket()
         client.connect(online) // 连接socket并且发送上线消息
@@ -99,7 +100,7 @@ class ChatActivity : BaseAppCompatActivity(), View.OnClickListener {
 
     // 关闭资源
     override fun finish() {
-        //  client.close()
+        client.close()
         super.finish()
     }
 
